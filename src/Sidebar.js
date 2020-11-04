@@ -17,6 +17,11 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 
 import axios from './axios'
+import Pusher from 'pusher-js'
+
+const pusher = new Pusher('22990ff652e22adfad89', {
+    cluster: 'ap2'
+});
 
 const Sidebar = () => {
     const user = useSelector(selectUser)
@@ -32,6 +37,11 @@ const Sidebar = () => {
 
     useEffect(() => {
         getChannels();
+
+        const channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function (data) {
+            getChannels();
+        });
     }, [])
 
     const handleAddChannel = (e) => {
@@ -40,7 +50,7 @@ const Sidebar = () => {
         const channelName = prompt('Enter a new channel name')
 
         if (channelName) {
-            db.collection('channels').add({
+            axios.post('/new/channel', {
                 channelName: channelName
             })
 

@@ -38,8 +38,8 @@ const Sidebar = () => {
     useEffect(() => {
         getChannels();
 
-        const channel = pusher.subscribe('my-channel');
-        channel.bind('my-event', function (data) {
+        const channel = pusher.subscribe('channels');
+        channel.bind('newChannel', function (data) {
             getChannels();
         });
     }, [])
@@ -60,7 +60,7 @@ const Sidebar = () => {
     return (
         <div className='sidebar' >
             <div className="sidebar__top">
-                <h3>Clever Programmer</h3>
+                <h3>Saral Notes</h3>
                 <ExpandMoreIcon />
             </div>
 
